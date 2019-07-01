@@ -51,24 +51,39 @@ object Utils {
         var engFirstName = ""
         var engLastName = ""
 
-        firstName?.forEachIndexed { index, char ->
+        firstName?.forEach { char ->
             var c = chars[char.toLowerCase().toString()]
+
             if (c != null) {
-                if (index == 0)
-                    c = c[0]?.toUpperCase().toString()
-                engFirstName += c
+                engFirstName += if(char.isUpperCase()) {
+                    c[0].toUpperCase()
+                } else {
+                    c[0]
+                }
+
+                if(c.length == 2){
+                    engFirstName += c[1]
+                }
             }
         }
 
-        lastName?.forEachIndexed { index, char ->
-            var c2 = chars[char.toLowerCase().toString()]
-            if (c2 != null) {
-                if (index == 0) {
-                    c2 = c2[0]?.toUpperCase().toString()
+        lastName?.forEach { char ->
+            var c = chars[char.toLowerCase().toString()]
+
+            if (c != null) {
+                engLastName += if(char.isUpperCase()) {
+                    c[0].toUpperCase()
+                } else {
+                    c[0]
                 }
-                engLastName += c2
+
+                if(c?.length == 2){
+                    engLastName += c[1]
+                }
             }
         }
+
+        var res = ""
 
         if (engFirstName.isNullOrEmpty() && firstName != null) {
             engFirstName = firstName
@@ -76,7 +91,8 @@ object Utils {
         if (engLastName.isNullOrEmpty() && lastName != null) {
             engLastName = lastName
         }
-        return engFirstName + divider + engLastName
+
+        return if(!engLastName.isNullOrEmpty()) return engFirstName + divider + engLastName else return engFirstName
     }
 
     fun toInitials(firstName: String?, lastName: String?): String? {

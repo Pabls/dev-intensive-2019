@@ -49,8 +49,8 @@ data class User(
         }
 
         private var id: String = (++lastId).toString()
-        private var firstName: String? = null
-        private var lastName: String? = null
+        private var firstName: String? = "John"
+        private var lastName: String? = "Doe"
         private var avatar: String? = null
         private var rating: Int = 0
         private var respect: Int = 0

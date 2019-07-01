@@ -30,13 +30,15 @@ abstract class BaseMessage(
                     from = from,
                     chat = chat,
                     date = date,
-                    image = payload.toString()
+                    image = payload.toString(),
+                    isIncoming = isIncoming
                 ) else -> TextMessage(
                     id = "$lastId",
                     from = from,
                     chat = chat,
                     date = date,
-                    text = payload.toString()
+                    text = payload.toString(),
+                    isIncoming = isIncoming
                 )
             }
         }
