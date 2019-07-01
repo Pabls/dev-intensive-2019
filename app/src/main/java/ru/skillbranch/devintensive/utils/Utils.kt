@@ -55,15 +55,20 @@ object Utils {
             var c = chars[char.toLowerCase().toString()]
 
             if (c != null) {
-                engFirstName += if(char.isUpperCase()) {
+                engFirstName += if (char.isUpperCase()) {
                     c[0].toUpperCase()
                 } else {
                     c[0]
                 }
 
-                if(c.length == 2){
-                    engFirstName += c[1]
+                if (c.length > 1) {
+                    c.forEachIndexed { index, char ->
+                        if (index > 0) {
+                            engFirstName += char
+                        }
+                    }
                 }
+
             }
         }
 
@@ -71,14 +76,18 @@ object Utils {
             var c = chars[char.toLowerCase().toString()]
 
             if (c != null) {
-                engLastName += if(char.isUpperCase()) {
+                engLastName += if (char.isUpperCase()) {
                     c[0].toUpperCase()
                 } else {
                     c[0]
                 }
 
-                if(c?.length == 2){
-                    engLastName += c[1]
+                if (c.length > 1) {
+                    c.forEachIndexed { index, char ->
+                        if (index > 0) {
+                            engLastName += char
+                        }
+                    }
                 }
             }
         }
@@ -92,7 +101,7 @@ object Utils {
             engLastName = lastName
         }
 
-        return if(!engLastName.isNullOrEmpty()) return engFirstName + divider + engLastName else return engFirstName
+        return if (!engLastName.isNullOrEmpty()) return engFirstName + divider + engLastName else return engFirstName
     }
 
     fun toInitials(firstName: String?, lastName: String?): String? {
