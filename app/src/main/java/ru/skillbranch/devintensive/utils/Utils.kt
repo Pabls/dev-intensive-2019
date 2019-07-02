@@ -49,64 +49,121 @@ object Utils {
         return firstName to lastName
     }
 
-    fun transliteration(payload: String, divider: String = " "): String? {
-        val (firstName, lastName) = parseFullName(payload)
+    fun transliteration(payload: String, divider: String = " "): String {
+        val map = fillTranslitMap()
+        val builder = StringBuilder()
 
-        var engFirstName = ""
-        var engLastName = ""
+        for (char in payload.trim())
+            builder.append(getTranslChar(char, map))
 
-        firstName?.forEach { char ->
-            var c = chars[char.toLowerCase().toString()]
-
-            if (c != null) {
-                engFirstName += if (char.isUpperCase()) {
-                    c[0].toUpperCase()
-                } else {
-                    c[0]
-                }
-
-                if (c.length > 1) {
-                    c.forEachIndexed { index, char ->
-                        if (index > 0) {
-                            engFirstName += char
-                        }
-                    }
-                }
-
-            }
-        }
-
-        lastName?.forEach { char ->
-            var c = chars[char.toLowerCase().toString()]
-
-            if (c != null) {
-                engLastName += if (char.isUpperCase()) {
-                    c[0].toUpperCase()
-                } else {
-                    c[0]
-                }
-
-                if (c.length > 1) {
-                    c.forEachIndexed { index, char ->
-                        if (index > 0) {
-                            engLastName += char
-                        }
-                    }
-                }
-            }
-        }
-
-        var res = ""
-
-        if (engFirstName.isNullOrEmpty() && firstName != null) {
-            engFirstName = firstName
-        }
-        if (engLastName.isNullOrEmpty() && lastName != null) {
-            engLastName = lastName
-        }
-
-        return if (!engLastName.isNullOrEmpty()) return engFirstName + divider + engLastName else return engFirstName
+        return builder.toString().replace(" ", divider)
     }
+
+    private fun getTranslChar(char: Char, map: HashMap<Char, String>): String {
+        val transl  = map[char.toLowerCase()] ?: char.toString()
+
+        return if (char.isUpperCase() && transl.isNotEmpty())
+            transl.capitalize()
+        else transl
+    }
+
+    private fun fillTranslitMap(): HashMap<Char, String> {
+        val map = hashMapOf<Char, String>()
+        map['а'] = "a"
+        map['б'] = "b"
+        map['в'] = "v"
+        map['г'] = "g"
+        map['д'] = "d"
+        map['е'] = "e"
+        map['ё'] = "e"
+        map['ж'] = "zh"
+        map['з'] = "z"
+        map['и'] = "i"
+        map['й'] = "i"
+        map['к'] = "k"
+        map['л'] = "l"
+        map['м'] = "m"
+        map['н'] = "n"
+        map['о'] = "o"
+        map['п'] = "p"
+        map['р'] = "r"
+        map['с'] = "s"
+        map['т'] = "t"
+        map['у'] = "u"
+        map['ф'] = "f"
+        map['х'] = "h"
+        map['ц'] = "c"
+        map['ч'] = "ch"
+        map['ш'] = "sh'"
+        map['щ'] = "sh'"
+        map['ъ'] = ""
+        map['ы'] = "i"
+        map['ь'] = ""
+        map['э'] = "e"
+        map['ю'] = "yu"
+        map['я'] = "ya"
+
+        return map
+    }
+
+//    fun transliteration(payload: String, divider: String = " "): String? {
+//        val (firstName, lastName) = parseFullName(payload)
+//
+//        var engFirstName = ""
+//        var engLastName = ""
+//
+//        firstName?.forEach { char ->
+//            var c = chars[char.toLowerCase().toString()]
+//
+//            if (c != null) {
+//                engFirstName += if (char.isUpperCase()) {
+//                    c[0].toUpperCase()
+//                } else {
+//                    c[0]
+//                }
+//
+//                if (c.length > 1) {
+//                    c.forEachIndexed { index, char ->
+//                        if (index > 0) {
+//                            engFirstName += char
+//                        }
+//                    }
+//                }
+//
+//            }
+//        }
+//
+//        lastName?.forEach { char ->
+//            var c = chars[char.toLowerCase().toString()]
+//
+//            if (c != null) {
+//                engLastName += if (char.isUpperCase()) {
+//                    c[0].toUpperCase()
+//                } else {
+//                    c[0]
+//                }
+//
+//                if (c.length > 1) {
+//                    c.forEachIndexed { index, char ->
+//                        if (index > 0) {
+//                            engLastName += char
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//        var res = ""
+//
+//        if (engFirstName.isNullOrEmpty() && firstName != null) {
+//            engFirstName = firstName
+//        }
+//        if (engLastName.isNullOrEmpty() && lastName != null) {
+//            engLastName = lastName
+//        }
+//
+//        return if (!engLastName.isNullOrEmpty()) return engFirstName + divider + engLastName else return engFirstName
+//    }
 
     fun toInitials(firstName: String?, lastName: String?): String? {
         var res: String? = null
