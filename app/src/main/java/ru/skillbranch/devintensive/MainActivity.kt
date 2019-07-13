@@ -10,37 +10,62 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
 import ru.skillbranch.devintensive.models.Bender
 import ru.skillbranch.devintensive.models.Bender.Question
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
-    lateinit var benderImage: ImageView
-    lateinit var textTxt: TextView
-    lateinit var messageEt: EditText
-    lateinit var sendBtn: ImageView
 
-    lateinit var benderObj: Bender
+    companion object {
+        const val EXTRA_STATUS = "EXTRA_STATUS"
+        const val EXTRA_QUESTION = "EXTRA_QUESTION"
+    }
+
+    private lateinit var benderImage: ImageView
+    private lateinit var textTxt: TextView
+    private lateinit var messageEt: EditText
+    private lateinit var sendBtn: ImageView
+
+    private lateinit var benderObj: Bender
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        initView()
+        initBender(savedInstanceState)
+    }
 
-        benderImage = iv_bender
-        textTxt = tv_text
-        messageEt = et_message
-        sendBtn = iv_send
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState?.putString(EXTRA_STATUS, benderObj.status.name)
+        outState?.putString(EXTRA_QUESTION, benderObj.question.name)
+    }
 
+    override fun onClick(v: View?) {
+        if (v?.id == R.id.iv_send)
+            if (isAnswerValid())
+                sendAnswer()
+            else makeErrorMessage()
+    }
+
+    private fun initView() {
+        benderImage = findViewById(R.id.iv_bender)
+        textTxt = findViewById(R.id.tv_text)
+        messageEt = findViewById(R.id.et_message)
+        sendBtn = findViewById(R.id.iv_send)
+        sendBtn.setOnClickListener(this)
         makeSendOnActionDone(messageEt)
-        val status = savedInstanceState?.getString("STATUS") ?: Bender.Status.NORMAL.name
-        val question = savedInstanceState?.getString("QUESTION") ?: Bender.Question.NAME.name
+    }
+
+    private fun initBender(savedInstanceState: Bundle?) {
+        val status = savedInstanceState?.getString(EXTRA_STATUS) ?: Bender.Status.NORMAL.name
+        val question = savedInstanceState?.getString(EXTRA_QUESTION) ?: Bender.Question.NAME.name
+
         benderObj = Bender(Bender.Status.valueOf(status), Question.valueOf(question))
 
-        val(r, g, b) = benderObj.status.color
-        benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
+        val (red, green, blue) = benderObj.status.color
+        benderImage.setColorFilter(Color.rgb(red, green, blue), PorterDuff.Mode.MULTIPLY)
 
-        textTxt.text = benderObj.askQuestion()
-        sendBtn.setOnClickListener(this)
+        setMessage(benderObj.askQuestion())
     }
 
     private fun makeSendOnActionDone(editText: EditText) {
@@ -51,24 +76,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    override fun onClick(v: View?) {
-        if (v?.id == R.id.iv_send)
-            if (isAnswerValid())
-                sendAnswer()
-            else makeErrorMessage()
-    }
-
     private fun makeErrorMessage() {
-        val errorMessage = when(benderObj.question){
-            Question.NAME -> "Имя должно начинаться с заглавной буквы"
-            Question.PROFESSION -> "Профессия должна начинаться со строчной буквы"
-            Question.MATERIAL -> "Материал не должен содержать цифр"
-            Question.BDAY -> "Год моего рождения должен содержать только цифры"
-            Question.SERIAL -> "Серийный номер содержит только цифры, и их 7"
-            else -> "На этом все, вопросов больше нет"
+        val errorMessage = when (benderObj.question) {
+            Question.NAME -> getString(R.string.question_error_name)
+            Question.PROFESSION -> getString(R.string.question_error_profession)
+            Question.MATERIAL -> getString(R.string.question_error_material)
+            Question.BDAY -> getString(R.string.question_error_bday)
+            Question.SERIAL -> getString(R.string.question_error_serial)
+            else -> getString(R.string.question_end)
         }
-        textTxt.text = errorMessage + "\n" + benderObj.question.question
-        messageEt.setText("")
+        setMessage("$errorMessage\n${benderObj.question.question}")
+        clearEditText()
     }
 
     private fun isAnswerValid(): Boolean {
@@ -77,15 +95,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun sendAnswer() {
         val (phase, color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase())
-        messageEt.setText("")
-        val(r, g, b) = color
-        benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
-        textTxt.text = phase
+        clearEditText()
+        val (red, green, blue) = color
+        benderImage.setColorFilter(Color.rgb(red, green, blue), PorterDuff.Mode.MULTIPLY)
+        setMessage(phase)
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
-        super.onSaveInstanceState(outState)
-        outState?.putString("STATUS", benderObj.status.name)
-        outState?.putString("QUESTION", benderObj.question.name)
+    private fun setMessage(text: String) {
+        textTxt.text = text
+    }
+
+    private fun clearEditText() {
+        messageEt.setText(getString(R.string.common_empty))
     }
 }

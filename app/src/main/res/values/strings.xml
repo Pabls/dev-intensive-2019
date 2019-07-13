@@ -1,5 +1,14 @@
 <resources>
-    <string name="app_name">Dev-intensive</string>
+    <string name="app_name">Chat Dev-intensive</string>
+
+    <string name="common.empty"></string>
 
     <string name="main_activity.et_message.hint">Введите текст</string>
+    
+    <string name="question_error.name">Имя должно начинаться с заглавной буквы</string>
+    <string name="question_error.profession">Профессия должна начинаться со строчной буквы</string>
+    <string name="question_error.material">Материал не должен содержать цифр</string>
+    <string name="question_error.bday">Год моего рождения должен содержать только цифры</string>
+    <string name="question_error.serial">Серийный номер содержит только цифры, и их 7</string>
+    <string name="question.end">На этом все, вопросов больше нет</string>
 </resources>
