@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Dev-intensive</string>
+
+    <string name="main_activity.et_message.hint">Введите текст</string>
 </resources>
