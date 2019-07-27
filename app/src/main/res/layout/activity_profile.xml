@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_normal_16"
-                android:text="John Doe"
+                tools:text="pavel_semin"
                 app:layout_constraintBottom_toTopOf="@+id/tv_rank"
                 app:layout_constraintEnd_toEndOf="@+id/iv_avatar"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -92,7 +92,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/profile_bg"/>
 
         <View
-                android:id="@+id/devider_vertical"
+                android:id="@+id/divider_vertical"
                 android:layout_width="1dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/spacing_normal_16"
@@ -111,7 +111,7 @@
                 android:text="0"
                 android:drawableLeft="@drawable/ic_sp_24"
                 app:layout_constraintBottom_toTopOf="@+id/textView5"
-                app:layout_constraintEnd_toStartOf="@+id/devider_vertical"
+                app:layout_constraintEnd_toStartOf="@+id/divider_vertical"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/profile_bg"
                 app:layout_constraintVertical_chainStyle="packed"/>
@@ -136,7 +136,7 @@
                 android:drawableLeft="@drawable/ic_respect_24"
                 app:layout_constraintBottom_toTopOf="@+id/textView6"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/devider_vertical"
+                app:layout_constraintStart_toEndOf="@+id/divider_vertical"
                 app:layout_constraintTop_toBottomOf="@+id/profile_bg"
                 app:layout_constraintVertical_chainStyle="packed"/>
 
@@ -187,7 +187,7 @@
                     style="@style/Profile.EditText.Single"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="John"/>
+                    tools:text="Павел"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -207,7 +207,7 @@
                     style="@style/Profile.EditText.Single"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="Doe"/>
+                    tools:text="Семин"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <View
@@ -240,7 +240,7 @@
                     style="@style/Profile.EditText.MultiLine"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="Something about me"/>
+                    tools:text="эт я"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <View
@@ -282,7 +282,7 @@
                     style="@style/Profile.EditText.Single"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="https://github.com/urucxay"/>
+                    tools:text="https://мой гитхаб.ком/я"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <ImageButton
