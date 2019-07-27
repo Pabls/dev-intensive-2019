@@ -62,7 +62,6 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun initViews(savedInstanceState: Bundle?) {
-
         viewFields = mapOf(
             "nickName" to tv_nick_name,
             "rank" to tv_rank,
@@ -76,12 +75,27 @@ class ProfileActivity : AppCompatActivity() {
 
         isEditMode = savedInstanceState?.getBoolean(IS_EDIT_MODE, false) ?: false
         showCurrentMode(isEditMode)
+        setListeners()
+    }
 
+    private fun setListeners() {
+        btn_switch_theme.setOnClickListener { viewModel.switchTheme() }
+
+        btn_edit.setOnClickListener {
+            if (!isRepositoryValid(et_repository.text.toString())) {
+                et_repository.setText("")
+            }
+
+            if (isEditMode) {
+                saveProfileInfo()
+            }
+            isEditMode = !isEditMode
+            showCurrentMode(isEditMode)
+        }
 
         et_repository.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(text: CharSequence, p1: Int, p2: Int, p3: Int) {
-                val fullAddress = text.toString()
-                if (isRepositoryValid(fullAddress)) {
+                if (isRepositoryValid(text.toString())) {
                     wr_repository.error = null
                     wr_repository.isErrorEnabled = false
                 } else {
@@ -92,21 +106,6 @@ class ProfileActivity : AppCompatActivity() {
             override fun afterTextChanged(p0: Editable?) {}
             override fun beforeTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         })
-
-        btn_edit.setOnClickListener {
-
-            if (!isRepositoryValid(et_repository.text.toString())) {
-                et_repository.setText("")
-            }
-
-            if (isEditMode) saveProfileInfo()
-            isEditMode = !isEditMode
-            showCurrentMode(isEditMode)
-        }
-
-        btn_switch_theme.setOnClickListener {
-            viewModel.switchTheme()
-        }
     }
 
     private fun showCurrentMode(isEdit: Boolean) {
@@ -119,18 +118,17 @@ class ProfileActivity : AppCompatActivity() {
                 background.alpha = if (isEdit) 255 else 0
             }
         }
-        ic_eye.visibility = if (isEdit) View.GONE else View.VISIBLE
         wr_about.isCounterEnabled = isEdit
         wr_repository.isErrorEnabled = isEdit
+        ic_eye.visibility = if (isEdit) View.GONE else View.VISIBLE
 
         with(btn_edit) {
-            val filter: ColorFilter? = if (isEdit) {
-                PorterDuffColorFilter(
-                    resources.getColor(R.color.color_accent, theme), PorterDuff.Mode.SRC_IN
-                )
-            } else {
-                null
-            }
+            val filter: ColorFilter? =
+                if (isEdit) {
+                    PorterDuffColorFilter(resources.getColor(R.color.color_accent, theme), PorterDuff.Mode.SRC_IN)
+                } else {
+                    null
+                }
             val icon = if (isEdit) {
                 resources.getDrawable(R.drawable.ic_save_black_24dp, theme)
             } else {
