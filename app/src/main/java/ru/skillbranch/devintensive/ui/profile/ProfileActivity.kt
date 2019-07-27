@@ -54,7 +54,7 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun updateUI(profile: Profile) {
         profile.toMap().also {
-            for((k,v) in viewFields) {
+            for ((k, v) in viewFields) {
                 v.text = it[k].toString()
             }
             drawDefaultAvatar(it["initials"].toString())
@@ -88,6 +88,7 @@ class ProfileActivity : AppCompatActivity() {
                     wr_repository.error = "Невалидный адрес репозитория"
                 }
             }
+
             override fun afterTextChanged(p0: Editable?) {}
             override fun beforeTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         })
@@ -110,28 +111,27 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun showCurrentMode(isEdit: Boolean) {
         val info = viewFields.filter { setOf("firstName", "lastName", "about", "repository").contains(it.key) }
-        for((_, value) in info){
+        for ((_, value) in info) {
             (value as EditText).apply {
                 isFocusable = isEdit
                 isFocusableInTouchMode = isEdit
                 isEnabled = isEdit
-                background.alpha = if(isEdit) 255 else 0
+                background.alpha = if (isEdit) 255 else 0
             }
         }
-        ic_eye.visibility = if(isEdit) View.GONE else View.VISIBLE
+        ic_eye.visibility = if (isEdit) View.GONE else View.VISIBLE
         wr_about.isCounterEnabled = isEdit
         wr_repository.isErrorEnabled = isEdit
 
         with(btn_edit) {
-            val filter: ColorFilter? = if(isEdit) {
+            val filter: ColorFilter? = if (isEdit) {
                 PorterDuffColorFilter(
                     resources.getColor(R.color.color_accent, theme), PorterDuff.Mode.SRC_IN
                 )
             } else {
                 null
             }
-
-            val icon = if(isEdit) {
+            val icon = if (isEdit) {
                 resources.getDrawable(R.drawable.ic_save_black_24dp, theme)
             } else {
                 resources.getDrawable(R.drawable.ic_edit_black_24dp, theme)
@@ -146,24 +146,35 @@ class ProfileActivity : AppCompatActivity() {
             firstName = et_first_name.text.toString(),
             lastName = et_last_name.text.toString(),
             about = et_about.text.toString(),
-            repository =  et_repository.text.toString()
+            repository = et_repository.text.toString()
         ).apply {
             viewModel.saveProfileData(this)
         }
     }
 
     private fun isRepositoryValid(repoText: String): Boolean {
-        val regexStr = "^(?:https://)?(?:www.)?(?:github.com/)[^/|\\s]+(?<!${getRegexExceptions()})(?:/)?$"
+        val regexStr = "^(?:https://)?(?:www.)?(?:github.com/)[^/|\\s]+(?<!${getExceptions()})(?:/)?$"
         val regex = Regex(regexStr)
-        return !(repoText.isNotEmpty() && !regex.matches(repoText))
+        return !(!repoText.isNullOrEmpty() && !regex.matches(repoText))
     }
 
-    private fun getRegexExceptions(): String {
+    private fun getExceptions(): String {
         val exceptions = arrayOf(
-            "enterprise", "features", "topics", "collections", "trending", "events", "marketplace", "pricing",
-            "nonprofit", "customer-stories", "security", "login", "join"
+            "enterprise",
+            "features",
+            "topics",
+            "collections",
+            "trending",
+            "events",
+            "marketplace",
+            "pricing",
+            "nonprofit",
+            "customer-stories",
+            "security",
+            "login",
+            "join"
         )
-        return exceptions.joinToString("|\\b","\\b")
+        return exceptions.joinToString("|\\b", "\\b")
     }
 
     private fun drawDefaultAvatar(initials: String, textSize: Float = 48f, color: Int = Color.WHITE) {
@@ -172,18 +183,18 @@ class ProfileActivity : AppCompatActivity() {
         iv_avatar.setImageDrawable(drawable)
     }
 
-    private fun convertInitialsToBitmap(text:String, textSize:Float, textColor:Int): Bitmap {
+    private fun convertInitialsToBitmap(text: String, textSize: Float, textColor: Int): Bitmap {
         val dp = resources.displayMetrics.density.roundToInt()
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-        paint.textSize = textSize*dp
+        paint.textSize = textSize * dp
         paint.color = textColor
         paint.textAlign = Paint.Align.CENTER
 
-        val image = Bitmap.createBitmap(112*dp, 112*dp, Bitmap.Config.ARGB_8888)
+        val image = Bitmap.createBitmap(112 * dp, 112 * dp, Bitmap.Config.ARGB_8888)
 
         image.eraseColor(getThemeAccentColor(this))
         val canvas = Canvas(image)
-        canvas.drawText(text, 56f*dp, 56f*dp + paint.textSize/3, paint)
+        canvas.drawText(text, 56f * dp, 56f * dp + paint.textSize / 3, paint)
         return image
     }
 
