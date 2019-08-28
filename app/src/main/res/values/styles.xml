@@ -5,7 +5,6 @@
     </style>
 
     <style name="Profile">
-
     </style>
 
     <style name="Profile.EditText" parent="Profile">
@@ -59,5 +58,8 @@
         <item name="android:paddingRight">@dimen/spacing_normal_16</item>
         <item name="android:minHeight">72dp</item>
     </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light"/>
 
 </resources>
