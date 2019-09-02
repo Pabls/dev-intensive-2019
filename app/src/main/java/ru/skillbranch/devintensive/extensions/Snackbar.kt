@@ -10,13 +10,13 @@ fun Snackbar.setBackgroundColor(@ColorInt color: Int): Snackbar {
     return this
 }
 
-fun Snackbar.setBackgroundDrawable(@DrawableRes drawable: Int): Snackbar {
-    this.view.setBackgroundResource(drawable)
+fun Snackbar.setTextColor(@ColorInt textColor: Int): Snackbar {
+    this.view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+            .setTextColor(textColor)
     return this
 }
 
-fun Snackbar.setTextColor(@ColorInt textColor: Int): Snackbar {
-    this.view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
-        .setTextColor(textColor)
+fun Snackbar.setBackgroundDrawable(@DrawableRes drawable: Int): Snackbar {
+    this.view.setBackgroundResource(drawable)
     return this
 }

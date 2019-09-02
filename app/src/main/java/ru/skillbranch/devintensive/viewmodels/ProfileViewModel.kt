@@ -9,7 +9,7 @@ import ru.skillbranch.devintensive.repositories.PreferencesRepository
 
 class ProfileViewModel : ViewModel() {
 
-    private val repository : PreferencesRepository = PreferencesRepository
+    private val repository: PreferencesRepository = PreferencesRepository
     private val profileData = MutableLiveData<Profile>()
     private val appTheme = MutableLiveData<Int>()
     private val isRepoValid = MutableLiveData<Boolean>()
@@ -31,7 +31,7 @@ class ProfileViewModel : ViewModel() {
     fun getTheme(): LiveData<Int> = appTheme
 
     fun switchTheme() {
-        if(appTheme.value == AppCompatDelegate.MODE_NIGHT_YES) {
+        if (appTheme.value == AppCompatDelegate.MODE_NIGHT_YES) {
             appTheme.value = AppCompatDelegate.MODE_NIGHT_NO
         } else {
             appTheme.value = AppCompatDelegate.MODE_NIGHT_YES

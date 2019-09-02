@@ -75,9 +75,9 @@ class ArchiveActivity : AppCompatActivity() {
 
         chatAdapter = ChatAdapter {
             Snackbar.make(rv_archive_list, "Click on ${it.title}", Snackbar.LENGTH_LONG)
-                .setTextColor(Utils.getCurrntModeColor(this, R.attr.colorSnackBarText))
-                .setBackgroundDrawable(R.drawable.bg_snackbar)
-                .show()
+                    .setTextColor(Utils.getCurrntModeColor(this, R.attr.colorSnackBarText))
+                    .setBackgroundDrawable(R.drawable.bg_snackbar)
+                    .show()
         }
 
         val myDivider = resources.getDrawable(R.drawable.divider_chat_list, theme)
@@ -89,11 +89,11 @@ class ArchiveActivity : AppCompatActivity() {
             val id = it.id
             viewModel.restoreFromArchive(id)
 
-            Snackbar.make(rv_archive_list,"Восстановить чат с ${it.title} из архива?", Snackbar.LENGTH_LONG)
-                .setTextColor(Utils.getCurrntModeColor(this, R.attr.colorSnackBarText))
-                .setBackgroundDrawable(R.drawable.bg_snackbar)
-                .setAction("ОТМЕНА") { viewModel.addToArchive(id) }
-                .show()
+            Snackbar.make(rv_archive_list, "Восстановить чат с ${it.title} из архива?", Snackbar.LENGTH_LONG)
+                    .setTextColor(Utils.getCurrntModeColor(this, R.attr.colorSnackBarText))
+                    .setBackgroundDrawable(R.drawable.bg_snackbar)
+                    .setAction("ОТМЕНА") { viewModel.addToArchive(id) }
+                    .show()
         }
         val touchHelper = ItemTouchHelper(touchCallBack)
         touchHelper.attachToRecyclerView(rv_archive_list)

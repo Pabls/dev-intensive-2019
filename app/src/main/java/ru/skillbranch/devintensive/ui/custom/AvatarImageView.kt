@@ -23,10 +23,25 @@ class AvatarImageView @JvmOverloads constructor(
         super.onDraw(canvas)
     }
 
-    private fun drawAvatarWithInitials(initials: String) : Bitmap {
+    private fun getColorFromInitials(initials: String): Int {
+        return when (initials.hashCode() % 10) {
+            0 -> resources.getColor(R.color.color_avatar1, context.theme)
+            1 -> resources.getColor(R.color.color_avatar2, context.theme)
+            2 -> resources.getColor(R.color.color_avatar3, context.theme)
+            3 -> resources.getColor(R.color.color_avatar4, context.theme)
+            4 -> resources.getColor(R.color.color_avatar5, context.theme)
+            5 -> resources.getColor(R.color.color_avatar6, context.theme)
+            6 -> resources.getColor(R.color.color_avatar7, context.theme)
+            7 -> resources.getColor(R.color.color_avatar8, context.theme)
+            8 -> resources.getColor(R.color.color_avatar9, context.theme)
+            else -> resources.getColor(R.color.color_avatar10, context.theme)
+        }
+    }
+
+    private fun drawAvatarWithInitials(initials: String): Bitmap {
         paint = Paint().apply {
             isAntiAlias = true
-            this.textSize = layoutParams.height/2.33f
+            this.textSize = layoutParams.height / 2.33f
             color = Color.WHITE
             textAlign = Paint.Align.CENTER
         }
@@ -40,22 +55,7 @@ class AvatarImageView @JvmOverloads constructor(
         bitmap = Bitmap.createBitmap(layoutParams.width, layoutParams.height, Bitmap.Config.ARGB_8888)
         bitmap.eraseColor(getColorFromInitials(initials))
         canvas = Canvas(bitmap)
-        canvas.drawText(initials, backgroundBounds.centerX(), textBottom , paint)
+        canvas.drawText(initials, backgroundBounds.centerX(), textBottom, paint)
         return bitmap
-    }
-
-    private fun getColorFromInitials(initials: String) : Int {
-        return when(initials.hashCode()%10) {
-            0 -> resources.getColor(R.color.color_avatar1, context.theme)
-            1 -> resources.getColor(R.color.color_avatar2, context.theme)
-            2 -> resources.getColor(R.color.color_avatar3, context.theme)
-            3 -> resources.getColor(R.color.color_avatar4, context.theme)
-            4 -> resources.getColor(R.color.color_avatar5, context.theme)
-            5 -> resources.getColor(R.color.color_avatar6, context.theme)
-            6 -> resources.getColor(R.color.color_avatar7, context.theme)
-            7 -> resources.getColor(R.color.color_avatar8, context.theme)
-            8 -> resources.getColor(R.color.color_avatar9, context.theme)
-            else -> resources.getColor(R.color.color_avatar10, context.theme)
-        }
     }
 }

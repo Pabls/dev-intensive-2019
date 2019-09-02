@@ -13,9 +13,9 @@ import ru.skillbranch.devintensive.models.data.ChatItem
 import ru.skillbranch.devintensive.utils.Utils
 
 class ChatItemTouchHelperCallback(
-    private val adapter: ChatAdapter,
-    private val isArchive: Boolean,
-    private val swipeListener: (ChatItem) -> Unit
+        private val adapter: ChatAdapter,
+        private val isArchive: Boolean,
+        private val swipeListener: (ChatItem) -> Unit
 ) : ItemTouchHelper.Callback() {
 
     private val bgRect = RectF()
@@ -23,8 +23,8 @@ class ChatItemTouchHelperCallback(
     private val iconBounds = Rect()
 
     override fun getMovementFlags(
-        recyclerView: RecyclerView,
-        viewHolder: RecyclerView.ViewHolder
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder
     ): Int {
         return if (viewHolder is ItemTouchViewHolder) {
             makeFlag(ItemTouchHelper.ACTION_STATE_SWIPE, ItemTouchHelper.START)
@@ -34,9 +34,9 @@ class ChatItemTouchHelperCallback(
     }
 
     override fun onMove(
-        recyclerView: RecyclerView,
-        viewHolder: RecyclerView.ViewHolder,
-        target: RecyclerView.ViewHolder
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
     ): Boolean {
         return false
     }
@@ -58,13 +58,13 @@ class ChatItemTouchHelperCallback(
     }
 
     override fun onChildDraw(
-        canvas: Canvas,
-        recyclerView: RecyclerView,
-        viewHolder: RecyclerView.ViewHolder,
-        dX: Float,
-        dY: Float,
-        actionState: Int,
-        isCurrentlyActive: Boolean
+            canvas: Canvas,
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            dX: Float,
+            dY: Float,
+            actionState: Int,
+            isCurrentlyActive: Boolean
     ) {
         val context = recyclerView.context
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
@@ -77,15 +77,15 @@ class ChatItemTouchHelperCallback(
 
 
     private fun drawIcon(
-        canvas: Canvas,
-        itemView: View,
-        dX: Float
+            canvas: Canvas,
+            itemView: View,
+            dX: Float
     ) {
-        val icon =  if (isArchive) itemView.resources.getDrawable(R.drawable.ic_unarchive_black_24dp, itemView.context.theme) else
+        val icon = if (isArchive) itemView.resources.getDrawable(R.drawable.ic_unarchive_black_24dp, itemView.context.theme) else
             itemView.resources.getDrawable(R.drawable.ic_archive_black_24dp, itemView.context.theme)
         val iconSize = itemView.resources.getDimensionPixelSize(R.dimen.icon_size)
         val space = itemView.resources.getDimensionPixelSize(R.dimen.spacing_normal_16)
-        val margin = (itemView.bottom - itemView.top - iconSize)/2
+        val margin = (itemView.bottom - itemView.top - iconSize) / 2
 
         iconBounds.apply {
             left = itemView.right + dX.toInt() + space
@@ -98,10 +98,10 @@ class ChatItemTouchHelperCallback(
     }
 
     private fun drawBackground(
-        canvas: Canvas,
-        itemView: View,
-        dX: Float,
-        context: Context
+            canvas: Canvas,
+            itemView: View,
+            dX: Float,
+            context: Context
     ) {
         bgRect.apply {
             left = itemView.right.toFloat() + dX

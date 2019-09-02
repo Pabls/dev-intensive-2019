@@ -13,8 +13,8 @@ class ArchiveViewModel : ViewModel() {
     private val chatRepository = ChatRepository
     private val chats = Transformations.map(chatRepository.loadChats()) { chats ->
         return@map chats.filter { it.isArchived }
-            .map { it.toChatItem() }
-            .sortedBy { it.id.toInt() }
+                .map { it.toChatItem() }
+                .sortedBy { it.id.toInt() }
     }
 
     fun getChatData(): LiveData<List<ChatItem>> {
@@ -24,11 +24,11 @@ class ArchiveViewModel : ViewModel() {
             val queryStr = query.value!!
             val chats2 = chats.value!!
 
-            result.value = if (queryStr.isEmpty()) chats2 else chats2.filter { it.title.contains(queryStr, true)}
+            result.value = if (queryStr.isEmpty()) chats2 else chats2.filter { it.title.contains(queryStr, true) }
         }
 
-        result.addSource(chats){ filterF.invoke() }
-        result.addSource(query){ filterF.invoke() }
+        result.addSource(chats) { filterF.invoke() }
+        result.addSource(query) { filterF.invoke() }
 
         return result
     }

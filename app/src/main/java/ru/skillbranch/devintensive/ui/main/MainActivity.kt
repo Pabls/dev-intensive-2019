@@ -70,9 +70,9 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             } else {
                 Snackbar.make(rv_chat_list, "Кликнули по ${it.title}", Snackbar.LENGTH_LONG)
-                    .setTextColor(Utils.getCurrntModeColor(this, R.attr.colorSnackBarText))
-                    .setBackgroundDrawable(R.drawable.bg_snackbar)
-                    .show()
+                        .setTextColor(Utils.getCurrntModeColor(this, R.attr.colorSnackBarText))
+                        .setBackgroundDrawable(R.drawable.bg_snackbar)
+                        .show()
             }
         }
 
@@ -85,11 +85,11 @@ class MainActivity : AppCompatActivity() {
             val id = it.id
             viewModel.addToArchive(id)
 
-            Snackbar.make(rv_chat_list,"Вы точно хотите добавить ${it.title} в архив?", Snackbar.LENGTH_LONG)
-                .setTextColor(Utils.getCurrntModeColor(this, R.attr.colorSnackBarText))
-                .setBackgroundDrawable(R.drawable.bg_snackbar)
-                .setAction("ОТМЕНА") { viewModel.restoreFromArchive(id) }
-                .show()
+            Snackbar.make(rv_chat_list, "Вы точно хотите добавить ${it.title} в архив?", Snackbar.LENGTH_LONG)
+                    .setTextColor(Utils.getCurrntModeColor(this, R.attr.colorSnackBarText))
+                    .setBackgroundDrawable(R.drawable.bg_snackbar)
+                    .setAction("ОТМЕНА") { viewModel.restoreFromArchive(id) }
+                    .show()
         }
         val touchHelper = ItemTouchHelper(touchCallBack)
         touchHelper.attachToRecyclerView(rv_chat_list)

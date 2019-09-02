@@ -40,20 +40,20 @@ object PreferencesRepository {
     }
 
     fun getProfile(): Profile =
-        Profile(
-            prefs.getString(FIRST_NAME, "")!!,
-            prefs.getString(LAST_NAME, "")!!,
-            prefs.getString(ABOUT, "")!!,
-            prefs.getString(REPOSITORY, "")!!,
-            prefs.getInt(RATING, 0),
-            prefs.getInt(RESPECT, 0)
-        )
+            Profile(
+                    prefs.getString(FIRST_NAME, "")!!,
+                    prefs.getString(LAST_NAME, "")!!,
+                    prefs.getString(ABOUT, "")!!,
+                    prefs.getString(REPOSITORY, "")!!,
+                    prefs.getInt(RATING, 0),
+                    prefs.getInt(RESPECT, 0)
+            )
 
-    private fun putValue(pair: Pair<String, Any>) = with(prefs.edit()){
+    private fun putValue(pair: Pair<String, Any>) = with(prefs.edit()) {
         val key = pair.first
         val value = pair.second
 
-        when(value){
+        when (value) {
             is String -> putString(key, value)
             is Int -> putInt(key, value)
             is Boolean -> putBoolean(key, value)

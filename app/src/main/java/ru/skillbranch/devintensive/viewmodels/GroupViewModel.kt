@@ -16,35 +16,35 @@ class GroupViewModel : ViewModel() {
         users.filter { it.isSelected }
     }
 
-    fun getUsersData() : LiveData<List<UserItem>> {
+    fun getUsersData(): LiveData<List<UserItem>> {
         val result = MediatorLiveData<List<UserItem>>()
 
         val filterF = {
             val queryStr = query.value!!
             val users = userItems.value!!
 
-            result.value = if (queryStr.isEmpty()) users else users.filter { it.fullName.contains(queryStr, true)}
+            result.value = if (queryStr.isEmpty()) users else users.filter { it.fullName.contains(queryStr, true) }
         }
 
-        result.addSource(userItems){ filterF.invoke() }
-        result.addSource(query){ filterF.invoke() }
+        result.addSource(userItems) { filterF.invoke() }
+        result.addSource(query) { filterF.invoke() }
         return result
     }
 
-    fun getSelectedData() : LiveData<List<UserItem>> {
+    fun getSelectedData(): LiveData<List<UserItem>> {
         return selectedItems
     }
 
     fun handleSelectedItem(userId: String) {
         userItems.value = userItems.value!!.map {
-            if(it.id == userId) it.copy(isSelected = !it.isSelected)
+            if (it.id == userId) it.copy(isSelected = !it.isSelected)
             else it
         }
     }
 
     fun handleRemoveChip(userId: String) {
         userItems.value = userItems.value!!.map {
-            if(it.id == userId) it.copy(isSelected = false)
+            if (it.id == userId) it.copy(isSelected = false)
             else it
         }
     }
@@ -57,5 +57,5 @@ class GroupViewModel : ViewModel() {
         groupRepository.createChat(selectedItems.value!!)
     }
 
-    private fun loadUsers(): List<UserItem> = groupRepository.loadUsers().map{ it.toUserItem() }
+    private fun loadUsers(): List<UserItem> = groupRepository.loadUsers().map { it.toUserItem() }
 }

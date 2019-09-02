@@ -27,14 +27,11 @@ open class CircleImageView @JvmOverloads constructor(
 
     private val paint: Paint = Paint().apply { isAntiAlias = true }
     private val paintBorder: Paint = Paint().apply { isAntiAlias = true }
-
-    private var circleCenter = 0f
-    private var heightCircle = 0
-
     private var borderWidth = DEFAULT_BORDER_WIDTH.dp
     private var borderColor = DEFAULT_BORDER_COLOR
-
     private var civImage: Bitmap? = null
+    private var circleCenter = 0f
+    private var heightCircle = 0
 
     init {
         val attributes = context.obtainStyledAttributes(attrs, R.styleable.CircleImageView, defStyleAttr, 0)
@@ -51,6 +48,11 @@ open class CircleImageView @JvmOverloads constructor(
 
         canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenterWithBorder, paintBorder)
         canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenter, paint)
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        update()
     }
 
     fun getBorderWidth(): Int = borderWidth.toInt().toDp()
@@ -72,7 +74,7 @@ open class CircleImageView @JvmOverloads constructor(
         invalidate()
     }
 
-    fun drawDefaultAvatar(initials: String, textSize: Float = 20f, textColor: Int = Color.WHITE) : Bitmap {
+    fun drawDefaultAvatar(initials: String, textSize: Float = 20f, textColor: Int = Color.WHITE): Bitmap {
         val paint = Paint().apply {
             isAntiAlias = true
             this.textSize = textSize.dp
@@ -89,7 +91,7 @@ open class CircleImageView @JvmOverloads constructor(
         val image = Bitmap.createBitmap(layoutParams.width, layoutParams.height, Bitmap.Config.ARGB_8888)
         image.eraseColor(getThemeAccentColor(context))
         val canvas = Canvas(image)
-        canvas.drawText(initials, backgroundBounds.centerX(), textBottom , paint)
+        canvas.drawText(initials, backgroundBounds.centerX(), textBottom, paint)
 
         return image
     }
@@ -107,14 +109,21 @@ open class CircleImageView @JvmOverloads constructor(
         invalidate()
     }
 
+    private fun drawableToBitmap(drawable: Drawable?): Bitmap? = when (drawable) {
+        null -> null
+        is BitmapDrawable -> drawable.bitmap
+        else -> {
+            val bitmap = Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(bitmap)
+            drawable.setBounds(0, 0, canvas.width, canvas.height)
+            drawable.draw(canvas)
+            bitmap
+        }
+    }
+
     private fun loadBitmap() {
         civImage = drawableToBitmap(drawable)
         updateShader()
-    }
-
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
-        update()
     }
 
     private fun updateShader() {
@@ -130,18 +139,6 @@ open class CircleImageView @JvmOverloads constructor(
                 postTranslate(dx, dy)
             })
             paint.shader = shader
-        }
-    }
-
-    private fun drawableToBitmap(drawable: Drawable?): Bitmap? = when (drawable) {
-        null -> null
-        is BitmapDrawable -> drawable.bitmap
-        else -> {
-            val bitmap = Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(bitmap)
-            drawable.setBounds(0, 0, canvas.width, canvas.height)
-            drawable.draw(canvas)
-            bitmap
         }
     }
 }

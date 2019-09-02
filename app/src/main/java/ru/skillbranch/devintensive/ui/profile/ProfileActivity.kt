@@ -63,7 +63,7 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun updateUI(profile: Profile) {
         profile.toMap().also {
-            for((k,v) in viewFields) {
+            for ((k, v) in viewFields) {
                 v.text = it[k].toString()
             }
             setDefaultAvatar(it["initials"].toString())
@@ -73,14 +73,14 @@ class ProfileActivity : AppCompatActivity() {
     private fun initViews(savedInstanceState: Bundle?) {
 
         viewFields = mapOf(
-            "nickName" to tv_nick_name,
-            "rank" to tv_rank,
-            "firstName" to et_first_name,
-            "lastName" to et_last_name,
-            "about" to et_about,
-            "repository" to et_repository,
-            "rating" to tv_rating,
-            "respect" to tv_respect
+                "nickName" to tv_nick_name,
+                "rank" to tv_rank,
+                "firstName" to et_first_name,
+                "lastName" to et_last_name,
+                "about" to et_about,
+                "repository" to et_repository,
+                "rating" to tv_rating,
+                "respect" to tv_respect
         )
 
         isEditMode = savedInstanceState?.getBoolean(EXTRA_IS_EDIT_MODE, false) ?: false
@@ -91,12 +91,13 @@ class ProfileActivity : AppCompatActivity() {
             override fun onTextChanged(text: CharSequence, p1: Int, p2: Int, p3: Int) {
                 viewModel.repositoryValidation(text.toString())
             }
+
             override fun afterTextChanged(p0: Editable?) {}
             override fun beforeTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         })
 
         btn_edit.setOnClickListener {
-            if (wr_repository.error == "Невалидный адрес репозитория"){
+            if (wr_repository.error == "Невалидный адрес репозитория") {
                 et_repository.setText("")
             }
 
@@ -112,28 +113,28 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun showCurrentMode(isEdit: Boolean) {
         val info = viewFields.filter { setOf("firstName", "lastName", "about", "repository").contains(it.key) }
-        for((_, value) in info){
+        for ((_, value) in info) {
             (value as EditText).apply {
                 isFocusable = isEdit
                 isFocusableInTouchMode = isEdit
                 isEnabled = isEdit
-                background.alpha = if(isEdit) 255 else 0
+                background.alpha = if (isEdit) 255 else 0
             }
         }
-        ic_eye.visibility = if(isEdit) View.GONE else View.VISIBLE
+        ic_eye.visibility = if (isEdit) View.GONE else View.VISIBLE
         wr_about.isCounterEnabled = isEdit
         wr_repository.isErrorEnabled = isEdit
 
         with(btn_edit) {
-            val filter: ColorFilter? = if(isEdit) {
+            val filter: ColorFilter? = if (isEdit) {
                 PorterDuffColorFilter(
-                    resources.getColor(R.color.color_accent, theme), PorterDuff.Mode.SRC_IN
+                        resources.getColor(R.color.color_accent, theme), PorterDuff.Mode.SRC_IN
                 )
             } else {
                 null
             }
 
-            val icon = if(isEdit) {
+            val icon = if (isEdit) {
                 resources.getDrawable(R.drawable.ic_save_black_24dp, theme)
             } else {
                 resources.getDrawable(R.drawable.ic_edit_black_24dp, theme)
@@ -145,10 +146,10 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun saveProfileInfo() {
         Profile(
-            firstName = et_first_name.text.toString(),
-            lastName = et_last_name.text.toString(),
-            about = et_about.text.toString(),
-            repository = et_repository.text.toString()
+                firstName = et_first_name.text.toString(),
+                lastName = et_last_name.text.toString(),
+                about = et_about.text.toString(),
+                repository = et_repository.text.toString()
         ).apply {
             viewModel.saveProfileData(this)
         }

@@ -13,7 +13,7 @@ class MainViewModel : ViewModel() {
     private val chatRepository = ChatRepository
     private val chats = Transformations.map(chatRepository.loadChats()) { chats ->
         val archived = chats.filter { it.isArchived }
-        if(archived.isEmpty()) {
+        if (archived.isEmpty()) {
             return@map chats.map { it.toChatItem() }
         } else {
             val listWithArchive = mutableListOf<ChatItem>()
@@ -30,11 +30,11 @@ class MainViewModel : ViewModel() {
             val queryStr = query.value!!
             val chats2 = chats.value!!
 
-            result.value = if (queryStr.isEmpty()) chats2 else chats2.filter { it.title.contains(queryStr, true)}
+            result.value = if (queryStr.isEmpty()) chats2 else chats2.filter { it.title.contains(queryStr, true) }
         }
 
-        result.addSource(chats){ filterF.invoke() }
-        result.addSource(query){ filterF.invoke() }
+        result.addSource(chats) { filterF.invoke() }
+        result.addSource(query) { filterF.invoke() }
 
         return result
     }
@@ -55,23 +55,23 @@ class MainViewModel : ViewModel() {
         query.value = text
     }
 
-    private fun makeArchiveItem(archived : List<Chat>) : ChatItem {
+    private fun makeArchiveItem(archived: List<Chat>): ChatItem {
         val count = archived.fold(0) { acc, chat -> acc + chat.unreadableMessageCount() }
 
         val lastChat: Chat = if (archived.none { it.unreadableMessageCount() != 0 }) archived.last() else
             archived.filter { it.unreadableMessageCount() != 0 }.maxBy { it.lastMessageDate()!! }!!
 
         return ChatItem(
-            "-1",
-            null,
-            "",
-            "Архив чатов",
-            lastChat.lastMessageShort().first,
-            count,
-            lastChat.lastMessageDate()?.shortFormat(),
-            false,
-            ChatType.ARCHIVE,
-            lastChat.lastMessageShort().second
+                "-1",
+                null,
+                "",
+                "Архив чатов",
+                lastChat.lastMessageShort().first,
+                count,
+                lastChat.lastMessageDate()?.shortFormat(),
+                false,
+                ChatType.ARCHIVE,
+                lastChat.lastMessageShort().second
         )
     }
 }

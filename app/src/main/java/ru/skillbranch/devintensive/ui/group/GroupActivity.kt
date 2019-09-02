@@ -62,6 +62,7 @@ class GroupActivity : AppCompatActivity() {
                 viewModel.handleSearchQuery(query)
                 return true
             }
+
             override fun onQueryTextChange(newText: String?): Boolean {
                 viewModel.handleSearchQuery(newText)
                 return true
@@ -115,9 +116,11 @@ class GroupActivity : AppCompatActivity() {
                         override fun onLoadCleared(placeholder: Drawable?) {
                             chipIcon = placeholder
                         }
+
                         override fun onLoadFailed(errorDrawable: Drawable?) {
                             chipIcon = drawAvatarForChip(user.initials ?: "??")
                         }
+
                         override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
                             chipIcon = resource
                         }

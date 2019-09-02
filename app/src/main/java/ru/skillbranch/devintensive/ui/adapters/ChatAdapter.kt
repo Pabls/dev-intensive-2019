@@ -17,7 +17,7 @@ import ru.skillbranch.devintensive.models.data.ChatType
 import ru.skillbranch.devintensive.utils.Utils
 
 class ChatAdapter(private val listener: (ChatItem) -> Unit) :
-    RecyclerView.Adapter<ChatAdapter.ChatItemViewHolder>() {
+        RecyclerView.Adapter<ChatAdapter.ChatItemViewHolder>() {
 
     companion object {
         private const val ARCHIVE_TYPE = 0
@@ -36,7 +36,7 @@ class ChatAdapter(private val listener: (ChatItem) -> Unit) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatItemViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            SINGLE_TYPE -> SingleViewHolder(inflater.inflate(R.layout.item_chat_single, parent,false))
+            SINGLE_TYPE -> SingleViewHolder(inflater.inflate(R.layout.item_chat_single, parent, false))
             GROUP_TYPE -> GroupViewHolder(inflater.inflate(R.layout.item_chat_group, parent, false))
             else -> ArchiveViewHolder(inflater.inflate(R.layout.item_chat_archive, parent, false))
         }
@@ -51,10 +51,10 @@ class ChatAdapter(private val listener: (ChatItem) -> Unit) :
     fun updateData(data: List<ChatItem>) {
         val diffCallBack = object : DiffUtil.Callback() {
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                items[oldItemPosition].id == data[newItemPosition].id
+                    items[oldItemPosition].id == data[newItemPosition].id
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                items[oldItemPosition] == data[newItemPosition]
+                    items[oldItemPosition] == data[newItemPosition]
 
             override fun getOldListSize(): Int = items.size
 
@@ -68,7 +68,7 @@ class ChatAdapter(private val listener: (ChatItem) -> Unit) :
     }
 
     abstract inner class ChatItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
-        LayoutContainer {
+            LayoutContainer {
         override val containerView: View?
             get() = itemView
 
@@ -100,7 +100,7 @@ class ChatAdapter(private val listener: (ChatItem) -> Unit) :
     }
 
     inner class SingleViewHolder(itemView: View) : ChatItemViewHolder(itemView),
-        ItemTouchViewHolder {
+            ItemTouchViewHolder {
 
         override fun onItemSelected() {
             itemView.setBackgroundColor(Utils.getCurrntModeColor(itemView.context, R.attr.colorSelected))
@@ -116,8 +116,8 @@ class ChatAdapter(private val listener: (ChatItem) -> Unit) :
                 iv_avatar_single.setInitials(item.initials)
             } else {
                 Glide.with(itemView)
-                    .load(item.avatar)
-                    .into(iv_avatar_single)
+                        .load(item.avatar)
+                        .into(iv_avatar_single)
             }
             sv_indicator.visibility = if (item.isOnline) View.VISIBLE else View.GONE
             tv_date_single.apply {
@@ -137,7 +137,7 @@ class ChatAdapter(private val listener: (ChatItem) -> Unit) :
     }
 
     inner class GroupViewHolder(itemView: View) : ChatItemViewHolder(itemView),
-        ItemTouchViewHolder {
+            ItemTouchViewHolder {
 
         override fun onItemSelected() {
             itemView.setBackgroundColor(Utils.getCurrntModeColor(itemView.context, R.attr.colorSelected))
