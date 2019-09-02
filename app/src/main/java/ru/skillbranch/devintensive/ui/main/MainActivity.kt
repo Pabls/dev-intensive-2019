@@ -38,6 +38,26 @@ class MainActivity : AppCompatActivity() {
         initViewModel()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_search, menu)
+        val searchItem = menu?.findItem(R.id.action_search)
+        val searchView = searchItem?.actionView as SearchView
+        searchView.queryHint = "Введите имя пользователя"
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                viewModel.handleSearchQuery(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                viewModel.handleSearchQuery(newText)
+                return true
+            }
+        })
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
     private fun initToolbar() {
         setSupportActionBar(toolbar)
     }
@@ -49,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this, ArchiveActivity::class.java)
                 startActivity(intent)
             } else {
-                Snackbar.make(rv_chat_list, "Click on ${it.title}", Snackbar.LENGTH_LONG)
+                Snackbar.make(rv_chat_list, "Кликнули по ${it.title}", Snackbar.LENGTH_LONG)
                     .setTextColor(Utils.getCurrntModeColor(this, R.attr.colorSnackBarText))
                     .setBackgroundDrawable(R.drawable.bg_snackbar)
                     .show()
@@ -89,25 +109,5 @@ class MainActivity : AppCompatActivity() {
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         viewModel.getChatData().observe(this, Observer { chatAdapter.updateData(it) })
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_search, menu)
-        val searchItem = menu?.findItem(R.id.action_search)
-        val searchView = searchItem?.actionView as SearchView
-        searchView.queryHint = "Введите имя пользователя"
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                viewModel.handleSearchQuery(query)
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                viewModel.handleSearchQuery(newText)
-                return true
-            }
-        })
-
-        return super.onCreateOptionsMenu(menu)
     }
 }

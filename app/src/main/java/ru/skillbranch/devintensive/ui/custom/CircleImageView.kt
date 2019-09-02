@@ -72,11 +72,6 @@ open class CircleImageView @JvmOverloads constructor(
         invalidate()
     }
 
-//    fun setInitials(initials: String) {
-//        setImageBitmap(drawDefaultAvatar(initials))
-//        invalidate()
-//    }
-
     fun drawDefaultAvatar(initials: String, textSize: Float = 20f, textColor: Int = Color.WHITE) : Bitmap {
         val paint = Paint().apply {
             isAntiAlias = true

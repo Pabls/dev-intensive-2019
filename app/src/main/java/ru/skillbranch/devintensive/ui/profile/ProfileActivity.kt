@@ -19,12 +19,12 @@ import ru.skillbranch.devintensive.viewmodels.ProfileViewModel
 class ProfileActivity : AppCompatActivity() {
 
     companion object {
-        const val IS_EDIT_MODE = "IS_EDIT_MODE"
+        const val EXTRA_IS_EDIT_MODE = "EXTRA_IS_EDIT_MODE"
     }
 
     private lateinit var viewModel: ProfileViewModel
-    private var isEditMode = false
     private lateinit var viewFields: Map<String, TextView>
+    private var isEditMode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -36,7 +36,7 @@ class ProfileActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putBoolean(IS_EDIT_MODE, isEditMode)
+        outState.putBoolean(EXTRA_IS_EDIT_MODE, isEditMode)
     }
 
     private fun initViewModel() {
@@ -83,7 +83,7 @@ class ProfileActivity : AppCompatActivity() {
             "respect" to tv_respect
         )
 
-        isEditMode = savedInstanceState?.getBoolean(IS_EDIT_MODE, false) ?: false
+        isEditMode = savedInstanceState?.getBoolean(EXTRA_IS_EDIT_MODE, false) ?: false
         showCurrentMode(isEditMode)
 
 

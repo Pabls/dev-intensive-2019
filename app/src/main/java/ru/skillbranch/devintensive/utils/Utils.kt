@@ -7,6 +7,25 @@ import ru.skillbranch.devintensive.R
 
 object Utils {
 
+    fun getThemeAccentColor(context: Context): Int {
+        val value = TypedValue()
+        context.theme.resolveAttribute(R.attr.colorAccent, value, true)
+        return value.data
+    }
+
+    fun getCurrntModeColor(context: Context, attrColor: Int): Int {
+        val value = TypedValue()
+        context.theme.resolveAttribute(attrColor, value, true)
+        return value.data
+    }
+
+    fun isNightModeActive(context: Context) : Boolean {
+        return when (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_YES -> true
+            else -> false
+        }
+    }
+
     fun parseFullName(fullName: String?): Pair<String?, String?> {
         val parts: List<String>? = fullName?.split(" ")
 
@@ -72,23 +91,4 @@ object Utils {
         'ю' to "yu",
         'я' to "ya"
     )
-
-    fun getThemeAccentColor(context: Context): Int {
-        val value = TypedValue()
-        context.theme.resolveAttribute(R.attr.colorAccent, value, true)
-        return value.data
-    }
-
-    fun getCurrntModeColor(context: Context, attrColor: Int): Int {
-        val value = TypedValue()
-        context.theme.resolveAttribute(attrColor, value, true)
-        return value.data
-    }
-
-    fun isNightModeActive(context: Context) : Boolean {
-        return when (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-            Configuration.UI_MODE_NIGHT_YES -> true
-            else -> false
-        }
-    }
 }

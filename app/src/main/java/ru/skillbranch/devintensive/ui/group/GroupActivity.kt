@@ -42,6 +42,34 @@ class GroupActivity : AppCompatActivity() {
         initViewModel()
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return if (item.itemId == android.R.id.home) {
+            finish()
+            overridePendingTransition(R.anim.idle, R.anim.bottom_up)
+            true
+        } else {
+            super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_search, menu)
+        val searchItem = menu?.findItem(R.id.action_search)
+        val searchView = searchItem?.actionView as SearchView
+        searchView.queryHint = "Введите имя пользователя"
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                viewModel.handleSearchQuery(query)
+                return true
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                viewModel.handleSearchQuery(newText)
+                return true
+            }
+        })
+        return super.onCreateOptionsMenu(menu)
+    }
+
     private fun initToolbar() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -79,37 +107,8 @@ class GroupActivity : AppCompatActivity() {
         })
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (item.itemId == android.R.id.home) {
-            finish()
-            overridePendingTransition(R.anim.idle, R.anim.bottom_up)
-            true
-        } else {
-            super.onOptionsItemSelected(item)
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_search, menu)
-        val searchItem = menu?.findItem(R.id.action_search)
-        val searchView = searchItem?.actionView as SearchView
-        searchView.queryHint = "Введите имя пользователя"
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                viewModel.handleSearchQuery(query)
-                return true
-            }
-            override fun onQueryTextChange(newText: String?): Boolean {
-                viewModel.handleSearchQuery(newText)
-                return true
-            }
-        })
-        return super.onCreateOptionsMenu(menu)
-    }
-
     private fun addChipToGroup(user: UserItem) {
         val chip = Chip(this).apply {
-            //подгружаем аватарку по URL, если нет инета или ссылки, то рисуем инициалы
             Glide.with(this).load(user.avatar)
                     .circleCrop()
                     .into(object : CustomTarget<Drawable>() {
@@ -164,7 +163,6 @@ class GroupActivity : AppCompatActivity() {
     }
 
     private fun drawAvatarForChip(initials: String): Drawable {
-
         val paint = Paint().apply {
             isAntiAlias = true
             this.textSize = 18f
