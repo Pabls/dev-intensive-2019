@@ -1,12 +1,8 @@
 package ru.skillbranch.devintensive.extensions
 
 import android.app.Activity
-import android.content.Context
 import android.graphics.Rect
-import android.util.TypedValue
-import android.view.View
 import android.view.inputmethod.InputMethodManager
-import kotlin.math.roundToLong
 
 fun Activity.hideKeyboard() {
     val view = currentFocus
